@@ -1,54 +1,55 @@
-// ...existing code...
 import React from 'react'
+import { NavLink, Link } from 'react-router-dom'
 
 const Navbar = () => {
-  const links = ['Home', 'About', 'Services', 'Price', 'Contact']
+  const links = [
+    { label: 'Home', to: '/' },
+    { label: 'Dashboard', to: '/dashboard' },
+    { label: 'My Trips', to: '/trips' },
+  ]
 
   return (
     <div>
-      {/* thin top accent */}
-      <div className="h-1 bg-rose-800" />
+      <div className="h-1 bg-blue-600" />
 
       <header className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* logo / left */}
+        <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-2xl font-extrabold text-slate-900">
-             Travel <span className="text-blue-600">Mate</span>
-            </span>
+            <Link to="/" className="text-2xl font-extrabold text-slate-900">
+              Travel <span className="text-blue-600">Mate</span>
+            </Link>
           </div>
 
-          {/* center nav (hidden on small screens) */}
           <nav className="hidden md:block">
-            <ul className="flex gap-8 items-end text-gray-600">
-              {links.map((label) => (
-                <li key={label} className="relative">
-                  {label === 'Home' ? (
-                    <div className="flex flex-col items-center">
-                      <a href={`/${label === 'Home' ? '' : label.toLowerCase()}`} className="text-slate-900 font-medium">
-                        {label}
-                      </a>
-                      <span className="mt-2 w-6 h-1 rounded-full bg-pink-500" />
-                    </div>
-                  ) : (
-                    <a href={`/${label.toLowerCase()}`} className="hover:text-slate-900">
-                      {label}
-                    </a>
-                  )}
+            <ul className="flex gap-8 items-center text-gray-600">
+              {links.map(({ label, to }) => (
+                <li key={label}>
+                  <NavLink
+                    to={to}
+                    className={({ isActive }) =>
+                      `font-medium transition ${isActive ? 'text-slate-900' : 'hover:text-slate-900'}`
+                    }
+                  >
+                    {label}
+                  </NavLink>
                 </li>
               ))}
             </ul>
           </nav>
 
-          {/* right actions */}
-          <div className="flex items-center gap-4">
-            <a href="/login" className="text-gray-600 hover:text-slate-900">Login</a>
-            <a
-              href="/register"
-              className="bg-blue-500 text-white px-4 py-2 rounded-full shadow hover:bg-pink-600 transition"
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              to="/login"
+              className="text-gray-600 hover:text-slate-900"
+            >
+              Login
+            </Link>
+            <Link
+              to="/register"
+              className="rounded-full bg-blue-600 px-4 py-2 text-white shadow hover:bg-blue-700 transition"
             >
               Register
-            </a>
+            </Link>
           </div>
         </div>
       </header>
@@ -57,4 +58,3 @@ const Navbar = () => {
 }
 
 export default Navbar
-// ...existing code...

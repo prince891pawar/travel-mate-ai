@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-     import './HeroPage.css'
-
+import { Link } from 'react-router-dom'
+import './HeroPage.css'
 
 const HeroPage = () => {
   const [destination, setDestination] = useState('')

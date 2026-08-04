@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.jsx'
 
-
-
 const Login = () => {
 
 const { login } = useAuth();
@@ -56,7 +54,6 @@ const { login } = useAuth();
   }
 };
 
-   
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     setFormData((prev) => ({
@@ -64,8 +61,6 @@ const { login } = useAuth();
       [name]: type === 'checkbox' ? checked : value,
     }))
   }
-
- 
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
