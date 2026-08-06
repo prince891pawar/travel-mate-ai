@@ -7,6 +7,7 @@ import NotFound from '../pages/NotFound'
 import ProtectedRoute from './ProtectedRoute'
 import Trips from '../pages/Trips'
 import Dashboard from '../pages/Dashboard'
+import CreateTrip from '../pages/CreateTrip'
 
 const AppRoutes = () => {
   return (
@@ -14,11 +15,13 @@ const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/create-trip" element={<CreateTrip />} />
       <Route path="*" element={<NotFound />} />
 
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/trips" element={<Trips />} />
+        <Route path="/create-trip" element={<CreateTrip />} />
       </Route>
     </Routes>
   )

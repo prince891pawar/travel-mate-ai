@@ -46,7 +46,7 @@ const Register = () => {
       const token = 'dummy-jwt-token'
 
       login(userData, token)
-      navigate('/Trips')
+      navigate('/dashboard')
     } catch (error) {
       console.error(error)
       alert('Registration failed')

@@ -44,7 +44,7 @@ const { login } = useAuth();
     login(userData, token);
 
     // Trips page par redirect
-    navigate("/trips");
+    navigate("/dashboard");
 
   } catch (error) {
     console.error(error);
