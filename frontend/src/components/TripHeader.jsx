@@ -16,7 +16,7 @@ const TripHeader = () => {
         <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-blue-100 opacity-80" />
         <div className="absolute -left-8 top-16 h-20 w-20 rounded-full bg-slate-100 opacity-80" />
         <div className="relative flex flex-col gap-4">
-          <div className="h-32 rounded-[28px] bg-blue-600 p-5 text-white shadow-lg">
+          <div className="h-40 rounded-[28px] bg-blue-600 p-5 text-white shadow-lg">
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-sm uppercase tracking-[0.18em] text-blue-200">Travel kit</div>

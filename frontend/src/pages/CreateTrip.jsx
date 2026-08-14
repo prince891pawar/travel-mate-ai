@@ -103,6 +103,7 @@ const CreateTrip = () => {
       console.log('Trip form submission:', formData)
       setIsSubmitting(false)
     }, 300)
+    navigate('/trips-detail')
   }
 
   return (
@@ -233,6 +234,7 @@ const CreateTrip = () => {
 
             <div className="pt-1">
               <GenerateButton onClick={handleSubmit} loading={isSubmitting} />
+             
             </div>
           </div>
         </section>

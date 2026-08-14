@@ -8,6 +8,7 @@ import ProtectedRoute from './ProtectedRoute'
 import Trips from '../pages/Trips'
 import Dashboard from '../pages/Dashboard'
 import CreateTrip from '../pages/CreateTrip'
+import TripsDetail from '../pages/TripsDetails'
 
 const AppRoutes = () => {
   return (
@@ -22,6 +23,8 @@ const AppRoutes = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/trips" element={<Trips />} />
         <Route path="/create-trip" element={<CreateTrip />} />
+        <Route path='/trips-detail' element={<TripsDetail />} />
+
       </Route>
     </Routes>
   )
