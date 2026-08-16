@@ -2,6 +2,7 @@
 import { useLocation } from 'react-router-dom'
 import TripsHeaders from '../components/tripsDetails/TripsHeaders'
 import TripOverview from '../components/tripsDetails/TripOverview'
+import Itinerary from '../components/tripsDetails/Itinerary'
 
 const defaultTrip = {
   destination: 'Paris',
@@ -25,6 +26,7 @@ const TripsDetail = () => {
       <div className="mx-auto max-w-6xl space-y-6">
         <TripsHeaders trip={trip} />
         <TripOverview trip={trip} />
+        <Itinerary />
       </div>
     </div>
   )
