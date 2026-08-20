@@ -200,7 +200,7 @@ const DayCard = ({ dayData, isExpanded = true, onToggle = () => {} }) => {
               onClick={handleAddActivity}
               className="w-full rounded-xl border border-dashed border-slate-300 bg-slate-50 py-2 text-sm font-semibold text-slate-700 transition-all hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600"
             >
-              + Add Activity
+              Add Activity
             </button>
           </div>
         </div>
