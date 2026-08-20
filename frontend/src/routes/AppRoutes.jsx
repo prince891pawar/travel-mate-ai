@@ -24,7 +24,6 @@ const AppRoutes = () => {
         <Route path="/trips" element={<Trips />} />
         <Route path="/create-trip" element={<CreateTrip />} />
         <Route path='/trips-detail' element={<TripsDetail />} />
-
       </Route>
     </Routes>
   )

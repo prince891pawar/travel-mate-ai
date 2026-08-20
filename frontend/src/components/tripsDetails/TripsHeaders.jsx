@@ -1,6 +1,7 @@
 ﻿import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import BackButton from '../BackButton'
+import Dashboard from '../../pages/Dashboard'
 
 const TripsHeaders = ({ trip }) => {
   const navigate = useNavigate()
@@ -64,7 +65,7 @@ const TripsHeaders = ({ trip }) => {
         <div className="relative px-6 pb-10 pt-6 sm:px-8 lg:px-10">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <BackButton onClick={() => navigate('/trips')} />
+              <BackButton onClick={() => navigate('/dashboard')} />
               <div className="flex flex-wrap items-center gap-3">
                 <span className="rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm">
                   {trip.country}
