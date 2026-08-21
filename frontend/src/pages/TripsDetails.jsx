@@ -4,6 +4,9 @@ import TripsHeaders from '../components/tripsDetails/TripsHeaders'
 import TripOverview from '../components/tripsDetails/TripOverview'
 import Itinerary from '../components/tripsDetails/Itinerary'
 import BudgetBreakdown from '../components/tripsDetails/BudgetBreakdown'
+import HotelRecommendations from '../components/tripsDetails/HotelRecommendations'
+import TravelTips from '../components/tripsDetails/TravelTips'
+
 
 const defaultTrip = {
   destination: 'Paris',
@@ -27,8 +30,11 @@ const TripsDetail = () => {
       <div className="mx-auto max-w-6xl space-y-6">
         <TripsHeaders trip={trip} />
         <TripOverview trip={trip} />
+        <HotelRecommendations />
+        <TravelTips />
         <Itinerary />
         <BudgetBreakdown />
+        
       </div>
     </div>
   )
