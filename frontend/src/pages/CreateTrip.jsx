@@ -234,7 +234,7 @@ const CreateTrip = () => {
 
             <div className="pt-1">
               <GenerateButton onClick={handleSubmit} loading={isSubmitting} />
-             
+                                        
             </div>
           </div>
         </section>

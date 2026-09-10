@@ -189,7 +189,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-6">  
               <div className="rounded-4xl border border-slate-200 bg-white p-6 shadow-sm">
                 <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Travel Insights</p>
                 <ul className="mt-6 space-y-4 text-sm text-slate-600">
@@ -210,7 +210,7 @@ const Dashboard = () => {
                   <div className="rounded-3xl bg-blue-50 p-4 text-sm text-slate-700">
                     <p className="font-semibold text-slate-900">Review your next itinerary</p>
                     <p className="mt-1">Check hotel and flight details before booking.</p>
-                  </div>
+                  </div>  
                   <div className="rounded-3xl bg-slate-50 p-4 text-sm text-slate-700">
                     <p className="font-semibold text-slate-900">Save your favorite places</p>
                     <p className="mt-1">Add wishlist locations to follow price alerts.</p>
