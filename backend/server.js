@@ -9,9 +9,8 @@ dotenv.config();
 
 const app = express()
 app.use(express.json()); // 👈 MUST be before routes
-app.use("/api/auth", authRoutes)
-
 app.use(cors())
+app.use("/api/auth", authRoutes)
 
 
 

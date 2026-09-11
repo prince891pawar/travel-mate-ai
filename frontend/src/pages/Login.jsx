@@ -26,29 +26,35 @@ const { login } = useAuth();
 
   try {
     setLoading(true);
+    const response = await fetch("http://localhost:3000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+      }),
+    });
 
-    // ==========================
-    // Dummy Login (Temporary)
-    // Backend banne ke baad API call aayegi
-    // ==========================
+    const data = await response.json();
 
-    const userData = {
-      id: 1,
-      name: "Prince",
-      email: formData.email,
-    };
+    if (!response.ok) {
+      alert(data.message);
+      return;
+    }
 
-    const token = "dummy-jwt-token";
+    console.log("Login response:", data);
 
-    // AuthContext ka login function call
-    login(userData, token);
+    // AuthContext me user + JWT save karna
+    login(data.user, data.token);
 
-    // Trips page par redirect
+    // Dashboard par bhejna
     navigate("/dashboard");
 
   } catch (error) {
-    console.error(error);
-    alert("Login Failed");
+    console.error("Login error:", error);
+    alert("Something went wrong. Please try again.");
   } finally {
     setLoading(false);
   }
