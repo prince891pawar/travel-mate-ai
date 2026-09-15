@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.jsx'
 
 const Register = () => {
-  const { login } = useAuth()
+ 
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: '',
@@ -23,37 +23,59 @@ const Register = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+  e.preventDefault()
 
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
-      alert('Please fill all fields')
-      return
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match')
-      return
-    }
-
-    try {
-      setLoading(true)
-
-      const userData = {
-        id: Date.now(),
-        name: formData.name,
-        email: formData.email,
-      }
-      const token = 'dummy-jwt-token'
-
-      login(userData, token)
-      navigate('/dashboard')
-    } catch (error) {
-      console.error(error)
-      alert('Registration failed')
-    } finally {
-      setLoading(false)
-    }
+  if (
+    !formData.name ||
+    !formData.email ||
+    !formData.password ||
+    !formData.confirmPassword
+  ) {
+    alert('Please fill all fields')
+    return
   }
+
+  if (formData.password !== formData.confirmPassword) {
+    alert('Passwords do not match')
+    return
+  }
+
+  try {
+    setLoading(true)
+
+    const response = await fetch(
+      'http://localhost:3000/api/auth/register',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
+      }
+    )
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      alert(data.message)
+      return
+    }
+
+    alert('Registration successful')
+
+    navigate('/login')
+
+  } catch (error) {
+    console.error('Registration error:', error)
+    alert('Registration failed')
+  } finally {
+    setLoading(false)
+  }
+}
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">

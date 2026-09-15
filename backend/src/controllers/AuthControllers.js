@@ -4,10 +4,10 @@ import jwt from "jsonwebtoken";
 
 const registerUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { name, email, password } = req.body;
 
     // Check required fields
-    if (!username || !email || !password) {
+    if (!name || !email || !password) {
       return res.status(400).json({
         message: "please provide all required fields"
       });
@@ -35,7 +35,7 @@ const registerUser = async (req, res) => {
     // Create new user
     const newUser = new User({
       email,
-      username,
+      name,
       password: hashedPassword
     });
 
@@ -47,7 +47,7 @@ const registerUser = async (req, res) => {
       message: "user registered successfully",
       user: {
         id: newUser._id,
-        username: newUser.username,
+        username: newUser.name,
         email: newUser.email
       }
     });
@@ -106,7 +106,7 @@ const loginUser = async (req, res) => {
       token,
       user: {
         id: user._id,
-        name: user.username,
+        name: user.name,
         email: user.email,
       },
     });
