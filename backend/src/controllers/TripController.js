@@ -58,6 +58,26 @@ const createTrip = async (req, res) => {
   }
 };
 
+const getMyTrips = async (req, res) => {
+  try {
+    const trips = await Trip.find({
+      user: req.user,
+    }).sort({ createdAt: -1 });
 
+    res.status(200).json({
+      message: "Trips fetched successfully",
+      trips,
+    });
+  } catch (error) {
+    console.error("Get Trips Error:", error);
 
-export default createTrip
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
+
+export {
+  createTrip,
+  getMyTrips
+};
