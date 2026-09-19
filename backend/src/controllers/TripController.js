@@ -1,11 +1,11 @@
-import Trip from "../models/Trip"
+import Trip from "../models/Trip.js"
 
 const createTrip = async (req, res) => {
   try {
     const {
       destination,
       startingFrom,
-      startDate,
+      startingDate,
       endDate,
       budget,
       travelers,
@@ -18,12 +18,13 @@ const createTrip = async (req, res) => {
     if (
       !destination ||
       !startingFrom ||
-      !startDate ||
+      !startingDate ||
       !endDate ||
       !budget ||
       !travelers ||
       !travelStyle ||
-      !hotelPreference
+      !hotelPreference ||
+      !notes
     ) {
       return res.status(400).json({
         message: "Please fill all required fields",
@@ -35,7 +36,7 @@ const createTrip = async (req, res) => {
       user: req.user,
       destination,
       startingFrom,
-      startDate,
+      startingDate,
       endDate,
       budget,
       travelers,
@@ -57,6 +58,6 @@ const createTrip = async (req, res) => {
   }
 };
 
-module.exports = {
-  createTrip,
-};
+
+
+export default createTrip

@@ -1,11 +1,9 @@
-const express = require("express");
-
-
-import {createTrip} from ("../controllers/TripController.js")
-import protect from ("../middleware/authMiddleware")
+import express from "express"
+import createTrip from "../controllers/TripController.js";
+import protect from "../middleware/authMiddleware.js"
 
 const router = express.Router();
 
 router.post("/", protect, createTrip);
 
-module.exports = router;
+export default router;

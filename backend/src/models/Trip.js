@@ -1,39 +1,39 @@
 import mongoose from "mongoose";
 
-const TripSchema = new mongoose.Schema({
-      user: {
+const TripSchema = new mongoose.Schema(
+  {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
 
-     destination: {
-        type: String,
-        required: true,
-        trim: true
-     },
+    destination: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-     startingForm: {
-        type: String,
-        required: true,
-        trim: true
-     },
+    startingFrom: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-     startingDate: {
-        type: Number,
-        required: true,
-        trim: true
-     },
+    startingDate: {
+      type: Date,
+      required: true,
+    },
 
-     endDate: {
+    endDate: {
       type: Date,
       required: true,
     },
 
     budget: {
-        type: Date,
-        enum: ["budget", "standard", "luxury"],
-        required: true,
+      type: String,
+      enum: ["budget", "standard", "luxury"],
+      required: true,
     },
 
     travelers: {
@@ -74,4 +74,4 @@ const TripSchema = new mongoose.Schema({
 
 const Trip = mongoose.model("Trip", TripSchema);
 
-module.exports = Trip;
+export default Trip;
