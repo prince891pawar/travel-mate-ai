@@ -42,7 +42,7 @@ const CreateTrip = () => {
   const [formData, setFormData] = useState({
     destination: '',
     startingFrom: '',
-    startDate: '',
+    startingDate: '',
     endDate: '',
     budget: '',
     travelers: '',
@@ -71,15 +71,15 @@ const CreateTrip = () => {
       nextErrors.startingFrom = 'Starting location is required.'
     }
 
-    if (!formData.startDate) {
-      nextErrors.startDate = 'Start date is required.'
+    if (!formData.startingDate) {
+      nextErrors.startingDate = 'Start date is required.'
     }
 
     if (!formData.endDate) {
       nextErrors.endDate = 'End date is required.'
     }
 
-    if (formData.startDate && formData.endDate && formData.endDate < formData.startDate) {
+    if (formData.startingDate && formData.endDate && formData.endDate < formData.startingDate) {
       nextErrors.endDate = 'End date cannot be before start date.'
     }
 
@@ -88,23 +88,70 @@ const CreateTrip = () => {
     return Object.keys(nextErrors).length === 0
   }
 
-  const handleSubmit = () => {
-    if (isSubmitting) return
+const handleSubmit = async () => {
+  if (isSubmitting) return
 
-    if (!validate()) {
-      setSubmitError('Please fix the highlighted fields before generating your trip.')
-      return
-    }
+  if (!validate()) {
+    setSubmitError(
+      'Please fix the highlighted fields before generating your trip.'
+    )
+    return
+  }
 
+  try {
     setIsSubmitting(true)
     setSubmitError('')
 
-    setTimeout(() => {
-      console.log('Trip form submission:', formData)
-      setIsSubmitting(false)
-    }, 300)
-    navigate('/trips-detail')
+    const token = localStorage.getItem('token')
+
+    if (!token) {
+      setSubmitError('Please login again.')
+      return
+    }
+
+    const response = await fetch(
+      'http://localhost:3000/api/trip',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          destination: formData.destination,
+          startingFrom: formData.startingFrom,
+          startingDate: formData.startingDate,
+          endDate: formData.endDate,
+          budget: formData.budget,
+          travelers: formData.travelers,
+          travelStyle: formData.travelStyle,
+          hotelPreference: formData.hotelPreference,
+          notes: formData.notes,
+        }),
+      }
+    )
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      setSubmitError(data.message || 'Failed to create trip')
+      return
+    }
+
+    console.log('Trip created:', data)
+
+    // Trip successfully created
+    navigate(`/trip/${data.trip._id}`)
+  } catch (error) {
+    console.error('Create Trip Error:', error)
+
+    setSubmitError(
+      'Something went wrong. Please try again.'
+    )
+  } finally {
+    setIsSubmitting(false)
   }
+}
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.12),_transparent_36%),_linear-gradient(180deg,_#ffffff_0%,_#f8fbff_100%)] px-4 py-8 sm:px-6 lg:px-8">
@@ -138,12 +185,12 @@ const CreateTrip = () => {
             <div className="grid gap-4 sm:grid-cols-2">
               <DatePicker
                 label="Start Date"
-                name="startDate"
-                value={formData.startDate}
+                name="startingDate"
+                value={formData.startingDate}
                 placeholder="Select start date"
                 icon={<span className="text-lg">📅</span>}
                 onChange={handleChange}
-                error={errors.startDate}
+                error={errors.startingDate}
               />
               <DatePicker
                 label="End Date"
