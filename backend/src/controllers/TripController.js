@@ -77,7 +77,36 @@ const getMyTrips = async (req, res) => {
   }
 };
 
+const getTripById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const trip = await Trip.findOne({
+      _id: id,
+      user: req.user,
+    });
+
+    if (!trip) {
+      return res.status(404).json({
+        message: "Trip not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Trip fetched successfully",
+      trip,
+    });
+  } catch (error) {
+    console.error("Get Trip By ID Error:", error);
+
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
+
 export {
   createTrip,
-  getMyTrips
+  getMyTrips,
+  getTripById
 };
