@@ -105,8 +105,12 @@ const getTripById = async (req, res) => {
   }
 };
 
+const generateTripAI = () => {
+  
+}
+
 export {
   createTrip,
   getMyTrips,
-  getTripById
+  getTripById,
 };

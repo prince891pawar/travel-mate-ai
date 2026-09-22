@@ -110,7 +110,7 @@ const handleSubmit = async () => {
     }
 
     const response = await fetch(
-      'http://localhost:3000/api/trip',
+      'http://localhost:3000/api/trips',
       {
         method: 'POST',
         headers: {
