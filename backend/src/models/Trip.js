@@ -66,6 +66,32 @@ const TripSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+
+    itinerary: {
+      type: [mongoose.Schema.Types.Mixed],
+      default: [],
+    },
+
+    budgetBreakdown: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null,
+    },
+
+    hotelRecommendations: {
+      type: [mongoose.Schema.Types.Mixed],
+      default: [],
+    },
+
+    travelTips: {
+      type: [String],
+      default: [],
+    },
+
+    aiStatus: {
+      type: String,
+      enum: ["pending", "generating", "completed", "failed"],
+      default: "pending",
+    },
   },
   {
     timestamps: true,

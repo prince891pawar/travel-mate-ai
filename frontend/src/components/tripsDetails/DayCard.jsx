@@ -37,8 +37,7 @@ const DayCard = ({ dayData, isExpanded = true, onToggle = () => {} }) => {
 
   const { day, date, title, image, activities = [], notes = '', important = '' } = dayData
 
-  // Calculate day total cost
-  const dayCost = activities.reduce((total, activity) => total + (activity.cost || 0), 0)
+  const hasActivityCosts = activities.some((activity) => Number.isFinite(activity.cost))
 
   const handleViewMap = (location) => {
     console.log('View on map:', location)
@@ -79,6 +78,7 @@ const DayCard = ({ dayData, isExpanded = true, onToggle = () => {} }) => {
               {date && <p className="text-sm font-semibold text-slate-500">• {date}</p>}
             </div>
             <h3 className="mt-1 text-lg font-semibold text-slate-900">{title}</h3>
+            {dayData.description && <p className="mt-1 text-sm text-slate-600">{dayData.description}</p>}
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -181,10 +181,12 @@ const DayCard = ({ dayData, isExpanded = true, onToggle = () => {} }) => {
           )}
 
           {/* Day Cost Summary */}
-          <div className="mt-4 border-t border-slate-200 pt-3 flex justify-between items-center">
-            <p className="text-sm font-semibold text-slate-700">Estimated Day Cost</p>
-            <p className="text-lg font-semibold text-blue-600">₹{dayCost.toLocaleString('en-IN')}</p>
-          </div>
+          {hasActivityCosts && (
+            <div className="mt-4 flex items-center justify-between border-t border-slate-200 pt-3">
+              <p className="text-sm font-semibold text-slate-700">Estimated Day Cost</p>
+              <p className="text-lg font-semibold text-blue-600">₹{activities.reduce((total, activity) => total + (activity.cost || 0), 0).toLocaleString('en-IN')}</p>
+            </div>
+          )}
 
           {/* Notes Section */}
           {notes && (

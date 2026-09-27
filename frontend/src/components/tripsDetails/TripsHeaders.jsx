@@ -13,7 +13,7 @@ const TripsHeaders = ({ trip }) => {
   }
 
   const handleShare = async () => {
-    const shareText = `${trip.destination}, ${trip.country} — ${formatTripDates(trip)} for ${trip.travelers} travelers.`
+  const shareText = `${trip.destination} — ${formatTripDates(trip)} for ${trip.travelers} travelers.`
 
     try {
       await navigator.clipboard.writeText(shareText)
@@ -60,7 +60,7 @@ const TripsHeaders = ({ trip }) => {
       <div className="relative overflow-hidden bg-slate-900/5">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${trip.image})`, filter: 'brightness(0.55)' }}
+            style={{ filter: 'brightness(0.55)' }}
         />
         <div className="relative px-6 pb-10 pt-6 sm:px-8 lg:px-10">
           <div className="flex flex-col gap-6">
@@ -68,7 +68,7 @@ const TripsHeaders = ({ trip }) => {
               <BackButton onClick={() => navigate('/dashboard')} />
               <div className="flex flex-wrap items-center gap-3">
                 <span className="rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm">
-                  {trip.country}
+                  From {trip.startingFrom}
                 </span>
                 <span className="rounded-full bg-white/90 px-4 py-2 text-sm text-slate-600 shadow-sm">
                   {formatTripDates(trip)}
@@ -90,10 +90,10 @@ const TripsHeaders = ({ trip }) => {
                 </div>
                 <div>
                   <h1 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-                    {trip.destination}, {trip.country} <span role="img" aria-label="flag">🇫🇷</span>
+                    {trip.destination}
                   </h1>
                   <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
-                    Explore iconic landmarks, riverside cafés, and curated cultural experiences with a polished itinerary designed for a comfortable group getaway.
+                    Your {trip.travelStyle} trip from {trip.startingFrom}, planned for {trip.travelers} travelers.
                   </p>
                 </div>
 
@@ -104,7 +104,7 @@ const TripsHeaders = ({ trip }) => {
                   </div>
                   <div className="rounded-3xl bg-slate-100 p-4 text-sm text-slate-700">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Budget</p>
-                    <p className="mt-3 text-lg font-semibold text-slate-900">₹{trip.budget.toLocaleString()}</p>
+                    <p className="mt-3 text-lg font-semibold capitalize text-slate-900">{trip.budget}</p>
                   </div>
                   <div className="rounded-3xl bg-slate-100 p-4 text-sm text-slate-700">
                     <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Duration</p>
@@ -155,17 +155,17 @@ const TripsHeaders = ({ trip }) => {
 
 const parseDate = (dateString) => {
   if (!dateString) return null
-  const [year, month, day] = dateString.split('-').map(Number)
+  const [year, month, day] = String(dateString).slice(0, 10).split('-').map(Number)
   return new Date(year, month - 1, day)
 }
 
 const getTripDuration = (trip) => {
-  if (trip.startDate && trip.endDate) {
-    const start = parseDate(trip.startDate)
+  if (trip.startingDate && trip.endDate) {
+    const start = parseDate(trip.startingDate)
     const end = parseDate(trip.endDate)
     if (!start || !end || Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return '--'
     const diff = Math.round((end - start) / (1000 * 60 * 60 * 24))
-    return diff > 0 ? diff : 1
+    return diff >= 0 ? diff + 1 : '--'
   }
 
   if (trip.dates) {
@@ -175,7 +175,7 @@ const getTripDuration = (trip) => {
       const end = parseDate(parts[1])
       if (start && end && !Number.isNaN(start.getTime()) && !Number.isNaN(end.getTime())) {
         const diff = Math.round((end - start) / (1000 * 60 * 60 * 24))
-        return diff > 0 ? diff : 1
+        return diff >= 0 ? diff + 1 : '--'
       }
     }
   }
@@ -184,8 +184,8 @@ const getTripDuration = (trip) => {
 }
 
 const formatTripDates = (trip) => {
-  if (trip.startDate && trip.endDate) {
-    const start = parseDate(trip.startDate)
+  if (trip.startingDate && trip.endDate) {
+    const start = parseDate(trip.startingDate)
     const end = parseDate(trip.endDate)
     if (!start || !end || Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return trip.dates
     return `${start.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })} — ${end.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}`

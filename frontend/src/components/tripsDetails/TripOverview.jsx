@@ -12,10 +12,10 @@ const TripOverview = ({ trip }) => {
   const duration = getTripDuration(trip)
 
   const values = {
-    destination: `${trip.destination}, ${trip.country}`,
+    destination: trip.destination,
     duration: duration === '--' ? 'Custom' : `${duration} Days`,
     travelers: trip.travelers || 'N/A',
-    budget: trip.budget ? `₹${trip.budget.toLocaleString()}` : 'N/A',
+    budget: trip.budget || 'N/A',
     travelStyle: trip.travelStyle || 'Adventure',
   }
 
@@ -28,7 +28,7 @@ const TripOverview = ({ trip }) => {
         </div>
         <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600">
           <span>📍</span>
-          {trip.destination}, {trip.country}
+          {trip.destination}
         </div>
       </div>
 
@@ -49,16 +49,16 @@ const TripOverview = ({ trip }) => {
 
 const parseDate = (dateString) => {
   if (!dateString) return null
-  const [year, month, day] = dateString.split('-').map(Number)
+  const [year, month, day] = String(dateString).slice(0, 10).split('-').map(Number)
   return new Date(year, month - 1, day)
 }
 
 const getTripDuration = (trip) => {
-  if (trip.startDate && trip.endDate) {
-    const start = parseDate(trip.startDate)
+  if (trip.startingDate && trip.endDate) {
+    const start = parseDate(trip.startingDate)
     const end = parseDate(trip.endDate)
     if (!start || !end || Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return '--'
-    const diff = Math.round((end - start) / (1000 * 60 * 60 * 24))
+    const diff = Math.round((end - start) / (1000 * 60 * 60 * 24)) + 1
     return diff > 0 ? diff : 1
   }
 

@@ -53,6 +53,7 @@ const CreateTrip = () => {
   const [errors, setErrors] = useState({})
   const [submitError, setSubmitError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [savedTripId, setSavedTripId] = useState('')
 
   const handleChange = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -101,6 +102,7 @@ const handleSubmit = async () => {
   try {
     setIsSubmitting(true)
     setSubmitError('')
+    setSavedTripId('')
 
     const token = localStorage.getItem('token')
 
@@ -138,10 +140,27 @@ const handleSubmit = async () => {
       return
     }
 
-    console.log('Trip created:', data)
+    const createdTripId = data.trip._id
+    setSavedTripId(createdTripId)
 
-    // Trip successfully created
-    navigate(`/trip/${data.trip._id}`)
+    try {
+      const aiResponse = await fetch(
+        `http://localhost:3000/api/trips/${createdTripId}/generate-ai`,
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+
+      if (!aiResponse.ok) {
+        const aiData = await aiResponse.json().catch(() => ({}))
+        console.warn('AI generation unavailable for saved trip:', aiData.message || 'Unknown AI error')
+      }
+    } catch (aiError) {
+      console.warn('AI generation request failed for saved trip:', aiError)
+    }
+
+    navigate(`/trip/${createdTripId}`)
   } catch (error) {
     console.error('Create Trip Error:', error)
 
@@ -277,9 +296,19 @@ const handleSubmit = async () => {
               />
             </div>
 
-            {submitError && <p className="rounded-3xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-700">{submitError}</p>}
+            {submitError && (
+              <div className="rounded-3xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-700">
+                <p>{submitError}</p>
+                {savedTripId && (
+                  <button type="button" onClick={() => navigate(`/trip/${savedTripId}`)} className="mt-3 font-semibold underline underline-offset-2">
+                    Open saved trip and retry AI plan
+                  </button>
+                )}
+              </div>
+            )}
 
             <div className="pt-1">
+              {isSubmitting && <p className="mb-3 text-center text-sm text-slate-600">Creating your AI travel plan...</p>}
               <GenerateButton onClick={handleSubmit} loading={isSubmitting} />
                                         
             </div>

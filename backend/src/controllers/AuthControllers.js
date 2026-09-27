@@ -99,8 +99,6 @@ const loginUser = async (req, res) => {
         expiresIn: "7d",
       }
     );
-    console.log(token)
-    
     // 5. Send response
     res.status(200).json({
       message: "Login successful",

@@ -2,10 +2,12 @@ import express from "express";
 import cors from "cors";
 import { ConnectDb } from "./src/config/db.js";
 import dotenv from "dotenv";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import authRoutes from "./src/routers/AuthRoute.js";
 import tripRoutes from "./src/routers/TripRoute.js"
 
-dotenv.config();
+dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), ".env") });
 
 const app = express()
 app.use(express.json());

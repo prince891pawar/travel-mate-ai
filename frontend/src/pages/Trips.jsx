@@ -171,8 +171,7 @@ const Trips = () => {
                   <span className="font-medium text-slate-900">
                     Dates:
                   </span>{' '}
-                  {new Date(trip.startDate).toLocaleDateString()} -{' '}
-                  {new Date(trip.endDate).toLocaleDateString()}
+                  {formatTripDate(trip.startingDate)} - {formatTripDate(trip.endDate)}
                 </p>
 
                 <p>
@@ -189,6 +188,11 @@ const Trips = () => {
                     Hotel:
                   </span>{' '}
                   {trip.hotelPreference}
+                </p>
+
+                <p>
+                  <span className="font-medium text-slate-900">AI plan:</span>{' '}
+                  <span className="capitalize">{trip.aiStatus || 'pending'}</span>
                 </p>
 
               </div>
@@ -215,6 +219,11 @@ const Trips = () => {
       </div>
     </div>
   )
+}
+
+const formatTripDate = (value) => {
+  const [year, month, day] = String(value).slice(0, 10).split('-').map(Number)
+  return new Date(year, month - 1, day).toLocaleDateString()
 }
 
 export default Trips
