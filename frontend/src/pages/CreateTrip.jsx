@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth.jsx'
 import BackButton from '../components/BackButton'
 import TripHeader from '../components/TripHeader'
 import InputField from '../components/InputField'
@@ -39,6 +40,7 @@ const hotelOptions = [
 
 const CreateTrip = () => {
   const navigate = useNavigate()
+  const { token } = useAuth()
   const [formData, setFormData] = useState({
     destination: '',
     startingFrom: '',
@@ -92,6 +94,11 @@ const CreateTrip = () => {
 const handleSubmit = async () => {
   if (isSubmitting) return
 
+  if (!token) {
+    navigate('/login', { replace: true })
+    return
+  }
+
   if (!validate()) {
     setSubmitError(
       'Please fix the highlighted fields before generating your trip.'
@@ -103,13 +110,6 @@ const handleSubmit = async () => {
     setIsSubmitting(true)
     setSubmitError('')
     setSavedTripId('')
-
-    const token = localStorage.getItem('token')
-
-    if (!token) {
-      setSubmitError('Please login again.')
-      return
-    }
 
     const response = await fetch(
       'http://localhost:3000/api/trips',
@@ -140,7 +140,8 @@ const handleSubmit = async () => {
       return
     }
 
-    const createdTripId = data.trip._id
+    const createdTripId = data.trip?._id
+    if (!createdTripId) throw new Error('Trip was created, but no trip ID was returned.')
     setSavedTripId(createdTripId)
 
     try {

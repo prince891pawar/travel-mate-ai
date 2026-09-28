@@ -1,119 +1,49 @@
 import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.jsx'
-
-const sampleTrips = [
-  {
-    id: 1,
-    destination: 'Paris',
-    country: 'France',
-    dates: 'Apr 10 - Apr 16',
-    budget: 1820,
-    status: 'Planned',
-  },
-  {
-    id: 2,
-    destination: 'Tokyo',
-    country: 'Japan',
-    dates: 'Jun 3 - Jun 12',
-    budget: 2450,
-    status: 'Booked',
-  },
-  {
-    id: 3,
-    destination: 'Goa',
-    country: 'India',
-    dates: 'Dec 22 - Dec 28',
-    budget: 980,
-    status: 'Completed',
-  },
-]
-
-const sidebarItems = [
-  { label: 'Dashboard', to: '/dashboard' },
-  { label: 'My Trips', to: '/trips' },
-  { label: 'Create Trip', to: '/trips' },
-  { label: 'Wishlist', to: '/trips' },
-  { label: 'History', to: '/trips' },
-  { label: 'Profile', to: '/dashboard' },
-  { label: 'Settings', to: '/dashboard' },
-]
+import useTrips from '../hooks/useTrips.jsx'
 
 const Dashboard = () => {
-  const { user, logout } = useAuth()
+  const { user, token } = useAuth()
   const [search, setSearch] = useState('')
+  const { trips, loading, error, reload } = useTrips(token)
 
   const filteredTrips = useMemo(
     () =>
-      sampleTrips.filter((trip) =>
-        [trip.destination, trip.country, trip.status]
+      trips.filter((trip) =>
+        [trip.destination, trip.startingFrom, trip.budget, trip.travelers, trip.travelStyle, trip.hotelPreference, trip.notes, trip.aiStatus]
           .join(' ')
           .toLowerCase()
           .includes(search.toLowerCase()),
       ),
-    [search],
+    [search, trips],
   )
+  const recentTrips = filteredTrips.slice(0, 5)
 
   const stats = useMemo(() => {
-    const totalBudget = sampleTrips.reduce((sum, trip) => sum + trip.budget, 0)
-    const countriesVisited = new Set(sampleTrips.map((trip) => trip.country)).size
+    const destinations = new Set(
+      trips.map((trip) => String(trip.destination || '').trim().toLowerCase()).filter(Boolean),
+    ).size
 
     return {
-      totalTrips: sampleTrips.length,
-      countriesVisited,
-      totalBudget,
-      favoritePlace: 'Goa',
+      totalTrips: trips.length,
+      destinations,
+      commonBudget: getMostCommonValue(trips.map((trip) => trip.budget)),
+      topDestination: getMostCommonValue(trips.map((trip) => trip.destination)),
     }
-  }, [])
+  }, [trips])
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900">
-      <div className="mx-auto grid max-w-360 gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:px-8">
-        <aside className="rounded-4xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="mb-8 flex items-center gap-4">
-            <div className="h-12 w-12 rounded-3xl bg-blue-600 text-white flex items-center justify-center text-xl font-semibold">
-              ✈️
-            </div>
-            <div>
-              <p className="text-sm text-slate-500">Travel Mate AI</p>
-              <h2 className="text-xl font-semibold text-slate-900">Control Panel</h2>
-            </div>
-          </div>
-
-          <nav className="space-y-2">
-            {sidebarItems.map((item) => (
-              <Link
-                key={item.label}
-                to={item.to}
-                className="block rounded-3xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="mt-10 rounded-3xl border border-slate-200 bg-slate-50 p-5">
-            <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Need help?</p>
-            <p className="mt-3 text-sm text-slate-700">Explore AI-powered trip suggestions and travel insights in one place.</p>
-          </div>
-        </aside>
-
-        <main className="space-y-6">
+    <main className="space-y-6">
           <section className="rounded-4xl border border-slate-200 bg-white p-6 shadow-sm">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm uppercase tracking-[0.24em] text-blue-600">Welcome back,</p>
-                <h1 className="mt-2 text-3xl font-semibold text-slate-900">{user?.name || 'Prince'}</h1>
+                <h1 className="mt-2 text-3xl font-semibold text-slate-900">{user?.name || '—'}</h1>
                 <p className="mt-2 text-sm text-slate-500">Ready for your next adventure? Let AI build the perfect trip for you.</p>
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <button
-                  onClick={() => logout?.()}
-                  className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
-                >
-                  Logout
-                </button>
                 <Link
                   to="/create-trip"
                   className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 transition"
@@ -131,19 +61,19 @@ const Dashboard = () => {
               <p className="mt-2 text-sm text-slate-500">All your trips</p>
             </div>
             <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
-              <p className="text-sm font-medium uppercase tracking-[0.22em] text-slate-500">Countries Visited</p>
-              <p className="mt-4 text-4xl font-semibold text-slate-900">{stats.countriesVisited}</p>
-              <p className="mt-2 text-sm text-slate-500">Amazing places</p>
+              <p className="text-sm font-medium uppercase tracking-[0.22em] text-slate-500">Destinations</p>
+              <p className="mt-4 text-4xl font-semibold text-slate-900">{stats.destinations}</p>
+              <p className="mt-2 text-sm text-slate-500">Across your trips</p>
             </div>
             <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
-              <p className="text-sm font-medium uppercase tracking-[0.22em] text-slate-500">Total Budget</p>
-              <p className="mt-4 text-4xl font-semibold text-slate-900">${stats.totalBudget.toLocaleString()}</p>
-              <p className="mt-2 text-sm text-slate-500">Across all trips</p>
+              <p className="text-sm font-medium uppercase tracking-[0.22em] text-slate-500">Common Budget</p>
+              <p className="mt-4 text-4xl font-semibold text-slate-900">{formatLabel(stats.commonBudget) || '—'}</p>
+              <p className="mt-2 text-sm text-slate-500">Most selected preference</p>
             </div>
             <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
-              <p className="text-sm font-medium uppercase tracking-[0.22em] text-slate-500">Favourite Place</p>
-              <p className="mt-4 text-4xl font-semibold text-slate-900">{stats.favoritePlace}</p>
-              <p className="mt-2 text-sm text-slate-500">Your top pick</p>
+              <p className="text-sm font-medium uppercase tracking-[0.22em] text-slate-500">Top Destination</p>
+              <p className="mt-4 text-4xl font-semibold text-slate-900">{stats.topDestination || '—'}</p>
+              <p className="mt-2 text-sm text-slate-500">Most planned destination</p>
             </div>
           </section>
 
@@ -165,25 +95,38 @@ const Dashboard = () => {
               </div>
 
               <div className="mt-6 space-y-4">
-                {filteredTrips.length > 0 ? (
-                  filteredTrips.map((trip) => (
-                    <article key={trip.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                {loading ? (
+                  <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-500">
+                    Loading your trips...
+                  </div>
+                ) : error ? (
+                  <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-500">
+                    {error}
+                    <button type="button" onClick={reload} className="mt-4 block w-full font-semibold text-blue-600 hover:text-blue-700">
+                      Try again
+                    </button>
+                  </div>
+                ) : recentTrips.length > 0 ? (
+                  recentTrips.map((trip) => (
+                    <Link key={trip._id} to={`/trip/${trip._id}`} className="block rounded-3xl border border-slate-200 bg-slate-50 p-5">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm font-semibold text-slate-900">{trip.destination}, {trip.country}</p>
-                          <p className="mt-1 text-sm text-slate-500">{trip.dates}</p>
+                          <p className="text-sm font-semibold text-slate-900">{trip.destination}</p>
+                          <p className="mt-1 text-sm text-slate-500">{formatTripDate(trip.startingDate)} - {formatTripDate(trip.endDate)}</p>
                         </div>
-                        <span className="rounded-2xl bg-blue-600 px-3 py-1 text-xs font-semibold text-white">{trip.status}</span>
+                        <span className="rounded-2xl bg-blue-600 px-3 py-1 text-xs font-semibold text-white">{formatLabel(trip.aiStatus || 'pending')}</span>
                       </div>
                       <div className="mt-4 flex items-center justify-between text-sm text-slate-600">
-                        <p>Budget: ${trip.budget.toLocaleString()}</p>
-                        <p className="font-medium text-slate-900">{trip.status === 'Booked' ? 'Ready' : 'Next step'}</p>
+                        <p>Budget: {formatLabel(trip.budget)}</p>
+                        <p className="font-medium text-slate-900">{formatLabel(trip.travelStyle)}</p>
                       </div>
-                    </article>
+                    </Link>
                   ))
                 ) : (
                   <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-slate-500">
-                    No trips match your search. Try a different keyword.
+                    {trips.length === 0
+                      ? "You don't have any trips yet."
+                      : 'No trips match your search. Try a different keyword.'}
                   </div>
                 )}
               </div>
@@ -193,14 +136,23 @@ const Dashboard = () => {
               <div className="rounded-4xl border border-slate-200 bg-white p-6 shadow-sm">
                 <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Travel Insights</p>
                 <ul className="mt-6 space-y-4 text-sm text-slate-600">
-                  <li className="rounded-3xl bg-slate-50 p-4">
-                    <p className="font-semibold text-slate-900">AI suggests booking sooner for Paris</p>
-                    <p className="mt-2 text-slate-500">Airfare and hotel prices are expected to rise next week.</p>
-                  </li>
-                  <li className="rounded-3xl bg-slate-50 p-4">
-                    <p className="font-semibold text-slate-900">Popular destination: Bali</p>
-                    <p className="mt-2 text-slate-500">Beach packages are trending for December travel.</p>
-                  </li>
+                  {trips.length > 0 ? (
+                    <>
+                      <li className="rounded-3xl bg-slate-50 p-4">
+                        <p className="font-semibold text-slate-900">Most planned destination: {stats.topDestination}</p>
+                        <p className="mt-2 text-slate-500">You have trips saved across {stats.destinations} destinations.</p>
+                      </li>
+                      <li className="rounded-3xl bg-slate-50 p-4">
+                        <p className="font-semibold text-slate-900">Most common budget: {formatLabel(stats.commonBudget)}</p>
+                        <p className="mt-2 text-slate-500">Based on your saved trip preferences.</p>
+                      </li>
+                    </>
+                  ) : (
+                    <li className="rounded-3xl bg-slate-50 p-4">
+                      <p className="font-semibold text-slate-900">No trip insights yet</p>
+                      <p className="mt-2 text-slate-500">Your saved trip details will appear here.</p>
+                    </li>
+                  )}
                 </ul>
               </div>
 
@@ -219,10 +171,34 @@ const Dashboard = () => {
               </div>
             </div>
           </section>
-        </main>
-      </div>
-    </div>
+    </main>
   )
+}
+
+const getMostCommonValue = (values) => {
+  const counts = new Map()
+
+  values.filter(Boolean).forEach((value) => {
+    const label = String(value)
+    const key = label.toLowerCase()
+    const entry = counts.get(key) || { label, count: 0 }
+    entry.count += 1
+    counts.set(key, entry)
+  })
+
+  return [...counts.values()].sort((left, right) => right.count - left.count)[0]?.label || ''
+}
+
+const formatLabel = (value) => {
+  if (!value) return ''
+  return String(value).replace(/\b\w/g, (character) => character.toUpperCase())
+}
+
+const formatTripDate = (value) => {
+  if (!value) return '—'
+  const [year, month, day] = String(value).slice(0, 10).split('-').map(Number)
+  if (!year || !month || !day) return '—'
+  return new Date(year, month - 1, day).toLocaleDateString()
 }
 
 export default Dashboard

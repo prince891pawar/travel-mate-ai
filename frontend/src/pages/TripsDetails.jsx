@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth.jsx'
 import TripsHeaders from '../components/tripsDetails/TripsHeaders'
 import TripOverview from '../components/tripsDetails/TripOverview'
 import Itinerary from '../components/tripsDetails/Itinerary'
@@ -11,6 +12,7 @@ import TravelTips from '../components/tripsDetails/TravelTips'
 const TripsDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { token } = useAuth()
   const [trip, setTrip] = useState(null)
   const [loading, setLoading] = useState(true)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -18,9 +20,10 @@ const TripsDetail = () => {
   const [generationError, setGenerationError] = useState('')
 
   useEffect(() => {
+    const controller = new AbortController()
+
     const fetchTrip = async () => {
       try {
-        const token = localStorage.getItem('token')
         if (!token) {
           navigate('/login', { replace: true })
           return
@@ -28,25 +31,31 @@ const TripsDetail = () => {
 
         const response = await fetch(`http://localhost:3000/api/trips/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
+          signal: controller.signal,
         })
         const data = await response.json()
         if (!response.ok) throw new Error(data.message || 'Unable to load this trip.')
         setTrip(data.trip)
       } catch (fetchError) {
-        setError(fetchError.message || 'Unable to load this trip.')
+        if (!controller.signal.aborted) setError(fetchError.message || 'Unable to load this trip.')
       } finally {
-        setLoading(false)
+        if (!controller.signal.aborted) setLoading(false)
       }
     }
 
     fetchTrip()
-  }, [id, navigate])
+    return () => controller.abort()
+  }, [id, navigate, token])
 
   const retryGeneration = async () => {
     setIsGenerating(true)
     setGenerationError('')
     try {
-      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login', { replace: true })
+        return
+      }
+
       const response = await fetch(`http://localhost:3000/api/trips/${id}/generate-ai`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
@@ -66,7 +75,14 @@ const TripsDetail = () => {
   }
 
   if (error || !trip) {
-    return <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4 text-center text-rose-700">{error || 'Trip not found.'}</div>
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-100 px-4 text-center">
+        <p className="text-rose-700">{error || 'Trip not found.'}</p>
+        <Link to="/trips" className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+          Back to My Trips
+        </Link>
+      </div>
+    )
   }
 
   return (

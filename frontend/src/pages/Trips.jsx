@@ -1,58 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useAuth } from '../hooks/useAuth.jsx'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import useTrips from '../hooks/useTrips.jsx'
 
 const Trips = () => {
-  const { user } = useAuth()
-  const navigate = useNavigate()
+  const { user, token } = useAuth()
 
   const [search, setSearch] = useState('')
-  const [trips, setTrips] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-
-  // Fetch user's trips from backend
-  useEffect(() => {
-    const fetchTrips = async () => {
-      try {
-        const token = localStorage.getItem('token')
-
-        if (!token) {
-          navigate('/login')
-          return
-        }
-
-        const response = await fetch(
-          'http://localhost:3000/api/trips',
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-
-        const data = await response.json()
-
-        if (!response.ok) {
-          throw new Error(
-            data.message || 'Failed to fetch trips'
-          )
-        }
-
-        console.log('My trips:', data)
-
-        setTrips(data.trips || [])
-      } catch (error) {
-        console.error('Fetch Trips Error:', error)
-        setError(error.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchTrips()
-  }, [navigate])
+  const { trips, loading, error, reload } = useTrips(token)
 
   // Search trips
   const filteredTrips = useMemo(() => {
@@ -63,6 +18,7 @@ const Trips = () => {
         trip.travelStyle,
         trip.travelers,
         trip.hotelPreference,
+        trip.notes,
       ]
         .join(' ')
         .toLowerCase()
@@ -91,7 +47,7 @@ const Trips = () => {
           </p>
 
           <button
-            onClick={() => window.location.reload()}
+            onClick={reload}
             className="mt-5 rounded-xl bg-blue-600 px-5 py-2 text-white hover:bg-blue-700"
           >
             Try Again
@@ -135,9 +91,9 @@ const Trips = () => {
         <div className="grid gap-6 lg:grid-cols-3">
 
           {filteredTrips.map((trip) => (
-            <div
+              <Link
               key={trip._id}
-              onClick={() => navigate(`/trip/${trip._id}`)}
+              to={`/trip/${trip._id}`}
               className="cursor-pointer rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
             >
               {/* Card Header */}
@@ -200,17 +156,17 @@ const Trips = () => {
               {/* View Details */}
               <div className="mt-6 border-t border-slate-100 pt-4">
                 <p className="text-sm font-medium text-blue-600">
-                  View trip details →
+                  View Details →
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
 
           {/* No Trips */}
           {filteredTrips.length === 0 && (
             <div className="col-span-full rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500 shadow-sm">
               {trips.length === 0
-                ? 'You have no trips yet. Create your first trip!'
+                ? "You don't have any trips yet."
                 : 'No trips match your search. Try another destination or remove the search filter.'}
             </div>
           )}

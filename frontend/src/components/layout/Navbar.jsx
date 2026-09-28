@@ -1,7 +1,16 @@
 import React from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth.jsx'
 
 const Navbar = () => {
+  const { token, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login', { replace: true })
+  }
+
   const links = [
     { label: 'Home', to: '/' },
     { label: 'Dashboard', to: '/dashboard' },
@@ -38,18 +47,26 @@ const Navbar = () => {
           </nav>
 
           <div className="flex flex-wrap items-center gap-3">
-            <Link
-              to="/login"
-              className="text-gray-600 hover:text-slate-900"
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="rounded-full bg-blue-600 px-4 py-2 text-white shadow hover:bg-blue-700 transition"
-            >
-              Register
-            </Link>
+            {token ? (
+              <button type="button" onClick={handleLogout} className="text-gray-600 hover:text-slate-900">
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="text-gray-600 hover:text-slate-900"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="rounded-full bg-blue-600 px-4 py-2 text-white shadow hover:bg-blue-700 transition"
+                >
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
