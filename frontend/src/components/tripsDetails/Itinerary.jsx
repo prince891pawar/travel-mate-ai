@@ -9,7 +9,7 @@ const Itinerary = ({ itinerary = [], travelers = 'solo' }) => {
   const hasMoreDays = itinerary.length > 4
 
   return (
-    <section className="rounded-4xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
       <div className="mb-6 flex items-center gap-3">
         <span className="text-2xl">📋</span>
         <h2 className="text-2xl font-semibold text-slate-900">Your Itinerary</h2>
@@ -23,7 +23,7 @@ const Itinerary = ({ itinerary = [], travelers = 'solo' }) => {
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <p className="text-sm text-slate-600">Duration & Travelers</p>
-                <p className="mt-1 text-lg font-semibold capitalize text-slate-900">{itinerary.length} Days • {Math.max(0, itinerary.length - 1)} Nights • {travelers} Travelers</p>
+                <p className="mt-1 break-words text-base font-semibold capitalize text-slate-900 sm:text-lg">{itinerary.length} Days • {Math.max(0, itinerary.length - 1)} Nights • {travelers} Travelers</p>
               </div>
               <div>
                 <p className="text-sm text-slate-600">Planned Activities</p>

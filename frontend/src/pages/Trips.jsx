@@ -29,7 +29,7 @@ const Trips = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-100">
+      <div className="flex min-h-64 items-center justify-center px-4 py-12">
         <p className="text-lg text-slate-600">
           Loading your trips...
         </p>
@@ -40,8 +40,8 @@ const Trips = () => {
   // Error state
   if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-        <div className="rounded-3xl bg-white p-8 text-center shadow-sm">
+      <div className="flex min-h-64 items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm sm:p-8">
           <p className="text-red-600">
             {error}
           </p>
@@ -58,17 +58,17 @@ const Trips = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 px-4 py-8 text-slate-900 sm:px-6 lg:px-8">
+    <div className="min-w-0 py-2 text-slate-900">
       <div className="mx-auto max-w-6xl">
 
         {/* Header */}
-        <div className="mb-8 flex flex-col gap-4 rounded-3xl bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-6 flex min-w-0 flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div>
             <p className="text-sm uppercase tracking-[0.24em] text-blue-600">
               Trips
             </p>
 
-            <h1 className="mt-2 text-3xl font-semibold">
+            <h1 className="mt-2 text-2xl font-semibold sm:text-3xl">
               My Trips
             </h1>
 
@@ -77,38 +77,39 @@ const Trips = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             <input
+              aria-label="Search trips"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search trips"
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 sm:w-72"
+              className="min-h-11 w-full min-w-0 rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-base text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 sm:w-72"
             />
           </div>
         </div>
 
         {/* Trips */}
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid min-w-0 gap-4 md:grid-cols-2 xl:grid-cols-3">
 
           {filteredTrips.map((trip) => (
               <Link
               key={trip._id}
               to={`/trip/${trip._id}`}
-              className="cursor-pointer rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              className="group min-w-0 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-blue-200 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:p-6"
             >
               {/* Card Header */}
-              <div className="flex items-center justify-between">
-                <div>
+              <div className="flex min-w-0 items-start justify-between gap-3">
+                <div className="min-w-0">
                   <p className="text-xs uppercase tracking-[0.25em] text-slate-400">
                     {trip.travelStyle}
                   </p>
 
-                  <h2 className="mt-3 text-xl font-semibold text-slate-900">
+                  <h2 className="mt-2 break-words text-xl font-semibold text-slate-900">
                     {trip.destination}
                   </h2>
                 </div>
 
-                <div className="rounded-2xl bg-blue-50 px-3 py-2 text-sm font-semibold capitalize text-blue-700">
+                <div className="max-w-28 shrink-0 break-words rounded-lg bg-blue-50 px-3 py-2 text-sm font-semibold capitalize text-blue-700">
                   {trip.travelers}
                 </div>
               </div>
@@ -154,9 +155,9 @@ const Trips = () => {
               </div>
 
               {/* View Details */}
-              <div className="mt-6 border-t border-slate-100 pt-4">
-                <p className="text-sm font-medium text-blue-600">
-                  View Details →
+              <div className="mt-5 border-t border-slate-100 pt-4">
+                <p className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 group-hover:text-blue-800">
+                  View Details <span className="ml-1" aria-hidden="true">→</span>
                 </p>
               </div>
             </Link>

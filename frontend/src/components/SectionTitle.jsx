@@ -6,7 +6,7 @@ const SectionTitle = ({ icon, title }) => {
       <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-lg text-slate-700">
         {icon}
       </span>
-      <span>{title}</span>
+      <span className="min-w-0 break-words">{title}</span>
     </div>
   )
 }

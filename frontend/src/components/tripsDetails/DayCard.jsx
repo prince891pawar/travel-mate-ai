@@ -59,8 +59,18 @@ const DayCard = ({ dayData, isExpanded = true, onToggle = () => {} }) => {
     >
       {/* Day Header */}
       <div
+        role="button"
+        tabIndex={0}
+        aria-expanded={isExpanded}
+        aria-label={`Toggle day ${day} itinerary`}
         className="flex cursor-pointer items-center justify-between gap-4 p-5"
         onClick={onToggle}
+        onKeyDown={(event) => {
+          if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) {
+            event.preventDefault()
+            onToggle()
+          }
+        }}
       >
         <div className="flex flex-1 items-center gap-4">
           {image && (
@@ -77,7 +87,7 @@ const DayCard = ({ dayData, isExpanded = true, onToggle = () => {} }) => {
               </p>
               {date && <p className="text-sm font-semibold text-slate-500">• {date}</p>}
             </div>
-            <h3 className="mt-1 text-lg font-semibold text-slate-900">{title}</h3>
+            <h3 className="mt-1 break-words text-lg font-semibold text-slate-900">{title}</h3>
             {dayData.description && <p className="mt-1 text-sm text-slate-600">{dayData.description}</p>}
           </div>
         </div>
@@ -138,7 +148,7 @@ const DayCard = ({ dayData, isExpanded = true, onToggle = () => {} }) => {
                     {/* Activity Details */}
                     <div className="flex-1 pt-0.5">
                       <div className="flex flex-col gap-1">
-                        <p className="font-semibold text-slate-900">{activity.title}</p>
+                        <p className="break-words font-semibold text-slate-900">{activity.title}</p>
 
                         {/* Transport Info */}
                         {activity.transport && (
@@ -149,15 +159,16 @@ const DayCard = ({ dayData, isExpanded = true, onToggle = () => {} }) => {
 
                         {/* Description */}
                         {activity.description && (
-                          <p className="text-xs text-slate-600">{activity.description}</p>
+                          <p className="break-words text-xs text-slate-600">{activity.description}</p>
                         )}
 
                         {/* Location and Cost */}
                         <div className="mt-2 flex flex-wrap items-center gap-3">
                           {activity.location && (
                             <button
+                              type="button"
                               onClick={() => handleViewMap(activity.location)}
-                              className="flex items-center gap-1 text-xs text-slate-700 hover:text-blue-600 transition-colors"
+                              className="min-h-11 max-w-full break-words text-left text-xs text-slate-700 transition-colors hover:text-blue-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                             >
                               📍 {activity.location}
                               <span className="text-blue-600 hover:underline">→</span>

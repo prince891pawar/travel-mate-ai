@@ -25,10 +25,10 @@ const HotelRecommendations = ({ hotels = [] }) => {
       ) : (
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
           {hotels.map((hotel, index) => (
-            <article key={`${hotel.name}-${index}`} className="rounded-[24px] border border-slate-200 bg-white p-5 transition hover:shadow-md">
+            <article key={`${hotel.name}-${index}`} className="min-w-0 rounded-xl border border-slate-200 bg-slate-50 p-4 transition hover:border-blue-200 hover:shadow-sm sm:p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <h3 className="text-xl font-semibold text-slate-950">{hotel.name}</h3>
+                  <h3 className="break-words text-lg font-semibold text-slate-950 sm:text-xl">{hotel.name}</h3>
                   <p className="mt-1 text-sm font-medium text-indigo-600">{hotel.category}</p>
                 </div>
                 <p className="text-right text-sm font-semibold text-slate-900">

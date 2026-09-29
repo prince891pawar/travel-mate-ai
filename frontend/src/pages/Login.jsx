@@ -70,9 +70,8 @@ const { login } = useAuth();
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
-      <div className="mx-auto flex min-h-screen max-w-7xl flex-col lg:flex-row">
-        <div className="relative flex-1 bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.2),_transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.15),_transparent_35%)] bg-white/80 px-6 py-10 sm:px-10 lg:px-14 lg:py-16">
-          <div className="absolute inset-0 bg-[url('')] bg-cover bg-center opacity-70"></div>
+      <div className="mx-auto flex min-h-screen max-w-screen-2xl flex-col lg:flex-row">
+        <div className="relative flex-1 bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.16),_transparent_34%),radial-gradient(circle_at_bottom_right,_rgba(14,165,233,0.12),_transparent_35%)] bg-white px-5 py-9 sm:px-10 lg:px-14 lg:py-16">
           <div className="relative z-10 flex h-full flex-col justify-center gap-8">
             <div className="inline-flex items-center gap-3 rounded-full bg-slate-900/90 px-4 py-2 text-white shadow-lg shadow-slate-900/10 ring-1 ring-white/20">
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-lg font-bold text-white">
@@ -84,7 +83,7 @@ const { login } = useAuth();
             </div>
 
             <div className="max-w-xl">
-              <h1 className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
                 Plan Smarter.
                 <span className="block text-blue-600">Travel Better.</span>
               </h1>
@@ -110,11 +109,11 @@ const { login } = useAuth();
           </div>
         </div>
 
-        <div className="flex-1 bg-slate-100 px-6 py-10 sm:px-10 lg:px-14 lg:py-20">
-          <div className="mx-auto max-w-md rounded-[32px] border border-slate-200/80 bg-white p-8 shadow-2xl shadow-slate-900/5">
+        <div className="flex flex-1 items-center justify-center bg-slate-50 px-4 py-8 sm:px-10 lg:px-12 lg:py-12">
+          <div className="mx-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-lg shadow-slate-900/5 sm:p-8">
             <div className="mb-8 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-blue-600">Welcome Back</p>
-              <h2 className="mt-4 text-3xl font-semibold text-slate-900">Login to continue your journey</h2>
+              <h2 className="mt-4 text-2xl font-semibold text-slate-900 sm:text-3xl">Login to continue your journey</h2>
             </div>
 
             <form className="space-y-6" onSubmit={handleSubmit}>
@@ -126,7 +125,7 @@ const { login } = useAuth();
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Enter your email"
-                  className="mt-3 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="mt-2 min-h-12 w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none transition focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-100"
                 />
               </label>
 
@@ -138,7 +137,7 @@ const { login } = useAuth();
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Enter your password"
-                  className="mt-3 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="mt-2 min-h-12 w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none transition focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-100"
                 />
               </label>
 
@@ -160,7 +159,7 @@ const { login } = useAuth();
 
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center rounded-2xl bg-blue-600 px-4 py-3 text-base font-semibold text-white shadow-lg shadow-blue-500/10 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-blue-700 active:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
                 disabled={loading}
                >
                 {loading ? 'Logging in...' : 'Login'}   

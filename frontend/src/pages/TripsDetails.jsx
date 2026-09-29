@@ -34,10 +34,10 @@ const TripsDetail = () => {
           signal: controller.signal,
         })
         const data = await response.json()
-        if (!response.ok) throw new Error(data.message || 'Unable to load this trip.')
+        if (!response.ok) throw new Error('Unable to load this trip. Please try again.')
         setTrip(data.trip)
-      } catch (fetchError) {
-        if (!controller.signal.aborted) setError(fetchError.message || 'Unable to load this trip.')
+      } catch {
+        if (!controller.signal.aborted) setError('Unable to load this trip. Please try again.')
       } finally {
         if (!controller.signal.aborted) setLoading(false)
       }
@@ -61,24 +61,24 @@ const TripsDetail = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       const data = await response.json()
-      if (!response.ok) throw new Error(data.message || 'Unable to generate your travel plan.')
+      if (!response.ok) throw new Error('Unable to generate your travel plan.')
       setTrip(data.trip)
-    } catch (generationError) {
-      setGenerationError(generationError.message || 'Unable to generate your travel plan. Please try again.')
+    } catch {
+      setGenerationError('We could not generate your travel plan. Please try again.')
     } finally {
       setIsGenerating(false)
     }
   }
 
   if (loading) {
-    return <div className="flex min-h-screen items-center justify-center bg-slate-100 text-slate-600">Loading your trip...</div>
+    return <div role="status" className="flex min-h-64 items-center justify-center py-12 text-slate-600">Loading your trip...</div>
   }
 
   if (error || !trip) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-100 px-4 text-center">
+      <div className="flex min-h-64 flex-col items-center justify-center gap-4 px-4 py-12 text-center">
         <p className="text-rose-700">{error || 'Trip not found.'}</p>
-        <Link to="/trips" className="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+        <Link to="/trips" className="inline-flex min-h-11 items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700">
           Back to My Trips
         </Link>
       </div>
@@ -86,16 +86,17 @@ const TripsDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-6xl space-y-6">
+    <div className="min-w-0 py-2">
+      <div className="mx-auto max-w-6xl space-y-5">
         <TripsHeaders trip={trip} />
         <TripOverview trip={trip} />
-        {trip.aiStatus === 'generating' && <p className="rounded-2xl bg-white p-5 text-slate-600">Creating your AI travel plan...</p>}
+        {trip.aiStatus === 'generating' && <p role="status" className="flex items-center gap-3 rounded-xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-900"><span className="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-blue-300 border-t-blue-700" aria-hidden="true" />Creating your personalized travel plan...</p>}
         {(trip.aiStatus === 'failed' || trip.aiStatus === 'pending') && (
           <div className="flex flex-col gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between">
             <p>{generationError || 'The AI travel plan is not ready yet.'}</p>
-            <button type="button" onClick={retryGeneration} disabled={isGenerating} className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white disabled:opacity-60">
-              {isGenerating ? 'Generating...' : 'Generate AI plan'}
+            <button type="button" onClick={retryGeneration} disabled={isGenerating} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-wait disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
+              {isGenerating && <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true" />}
+              {isGenerating ? 'Generating...' : 'Retry AI plan'}
             </button>
           </div>
         )}

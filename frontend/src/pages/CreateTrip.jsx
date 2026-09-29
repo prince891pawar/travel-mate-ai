@@ -136,7 +136,7 @@ const handleSubmit = async () => {
     const data = await response.json()
 
     if (!response.ok) {
-      setSubmitError(data.message || 'Failed to create trip')
+      setSubmitError('We could not create your trip. Please check your details and try again.')
       return
     }
 
@@ -174,14 +174,14 @@ const handleSubmit = async () => {
 }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.12),_transparent_36%),_linear-gradient(180deg,_#ffffff_0%,_#f8fbff_100%)] px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6">
+    <div className="min-w-0 py-2">
+      <div className="mx-auto flex min-w-0 max-w-6xl flex-col gap-5">
         <BackButton onClick={() => navigate(-1)} />
         <TripHeader />
 
-        <section className="rounded-[32px] bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)] sm:p-8">
-          <div className="grid gap-6">
-            <div className="grid gap-4 sm:grid-cols-2">
+        <section className="w-full min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:p-8">
+            <div className="grid min-w-0 grid-cols-1 gap-6">
+              <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
               <InputField
                 label="Destination"
                 name="destination"
@@ -202,7 +202,7 @@ const handleSubmit = async () => {
               />
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
               <DatePicker
                 label="Start Date"
                 name="startingDate"
@@ -223,9 +223,9 @@ const handleSubmit = async () => {
               />
             </div>
 
-            <div className="space-y-4">
+            <div className="min-w-0 space-y-4">
               <SectionTitle icon={<span>💰</span>} title="Budget" />
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="grid min-w-0 grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:grid-cols-3">
                 {budgetOptions.map((option) => (
                   <OptionCard
                     key={option.value}
@@ -239,9 +239,9 @@ const handleSubmit = async () => {
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="min-w-0 space-y-4">
               <SectionTitle icon={<span>👥</span>} title="Travelers" />
-              <div className="grid gap-3 sm:grid-cols-4">
+              <div className="grid min-w-0 grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:grid-cols-4">
                 {travelerOptions.map((option) => (
                   <OptionCard
                     key={option.value}
@@ -255,9 +255,9 @@ const handleSubmit = async () => {
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="min-w-0 space-y-4">
               <SectionTitle icon={<span>🎯</span>} title="Travel Style" />
-              <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-6">
+              <div className="grid min-w-0 grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:grid-cols-3 xl:grid-cols-6">
                 {travelStyleOptions.map((option) => (
                   <OptionCard
                     key={option.value}
@@ -271,9 +271,9 @@ const handleSubmit = async () => {
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="min-w-0 space-y-4">
               <SectionTitle icon={<span>🏨</span>} title="Hotel Preference" />
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="grid min-w-0 grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:grid-cols-3">
                 {hotelOptions.map((option, index) => (
                   <OptionCard
                     key={`${option.value}-${index}`}
@@ -309,7 +309,7 @@ const handleSubmit = async () => {
             )}
 
             <div className="pt-1">
-              {isSubmitting && <p className="mb-3 text-center text-sm text-slate-600">Creating your AI travel plan...</p>}
+              {isSubmitting && <p role="status" className="mb-3 text-center text-sm text-slate-600">Creating your personalized travel plan...</p>}
               <GenerateButton onClick={handleSubmit} loading={isSubmitting} />
                                         
             </div>

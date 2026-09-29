@@ -14,11 +14,11 @@ const History = () => {
   })
 
   return (
-    <main className="min-h-screen bg-slate-100 px-4 py-8 text-slate-900 sm:px-6 lg:px-8">
+    <main className="min-w-0 py-2 text-slate-900">
       <div className="mx-auto max-w-6xl">
-        <section className="mb-8 rounded-3xl bg-white p-6 shadow-sm">
+        <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <p className="text-sm uppercase tracking-[0.24em] text-blue-600">History</p>
-          <h1 className="mt-2 text-3xl font-semibold">Past trips</h1>
+          <h1 className="mt-2 text-2xl font-semibold sm:text-3xl">Past trips</h1>
           <p className="mt-2 text-sm text-slate-500">Trips are considered past when their end date has passed.</p>
         </section>
 
@@ -35,11 +35,11 @@ const History = () => {
         ) : (
           <div className="grid gap-6 lg:grid-cols-2">
             {pastTrips.map((trip) => (
-              <article key={trip._id} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <article key={trip._id} className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
                 <p className="text-sm text-slate-500">{formatTripDate(trip.startingDate)} - {formatTripDate(trip.endDate)}</p>
-                <h2 className="mt-2 text-xl font-semibold">{trip.destination}</h2>
+                <h2 className="mt-2 break-words text-xl font-semibold">{trip.destination}</h2>
                 <p className="mt-2 text-sm text-slate-600">{formatLabel(trip.travelStyle)} · {formatLabel(trip.budget)} budget</p>
-                <Link to={`/trip/${trip._id}`} className="mt-5 inline-flex text-sm font-semibold text-blue-600 hover:text-blue-700">
+                <Link to={`/trip/${trip._id}`} className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-blue-700 hover:text-blue-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
                   View Details
                 </Link>
               </article>
@@ -52,7 +52,7 @@ const History = () => {
 }
 
 const StateMessage = ({ children, error }) => (
-  <div className={`rounded-3xl border bg-white p-8 text-center shadow-sm ${error ? 'border-rose-200 text-rose-700' : 'border-slate-200 text-slate-500'}`}>
+  <div className={`rounded-2xl border bg-white p-6 text-center shadow-sm sm:p-8 ${error ? 'border-rose-200 text-rose-700' : 'border-slate-200 text-slate-500'}`}>
     {error ? <><p>{error}</p>{children}</> : children}
   </div>
 )

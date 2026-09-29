@@ -31,8 +31,8 @@ const AppRoutes = () => {
           <Route path="/history" element={<History />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/trip/:id" element={<TripsDetail />} />
         </Route>
-        <Route path="/trip/:id" element={<TripsDetail />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

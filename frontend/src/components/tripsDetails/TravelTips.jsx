@@ -20,12 +20,12 @@ const TravelTips = ({ tips = [] }) => {
           {tips.map((tip, index) => {
             const isExpanded = expandedTip === index
             return (
-              <div key={`${tip}-${index}`} className="overflow-hidden rounded-xl border border-slate-200 shadow-sm transition hover:border-slate-300 hover:shadow-md">
+              <div key={`${tip}-${index}`} className="min-w-0 overflow-hidden rounded-xl border border-slate-200 transition hover:border-blue-200">
                 <button
                   type="button"
                   aria-expanded={isExpanded}
                   onClick={() => setExpandedTip(isExpanded ? null : index)}
-                  className="flex w-full items-center gap-4 p-3 text-left sm:p-4"
+                  className="flex min-h-14 w-full items-center gap-3 p-3 text-left focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-blue-600 sm:gap-4 sm:p-4"
                 >
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-2xl" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
                   <span className="min-w-0 flex-1 text-sm leading-6 text-slate-700">{tip}</span>

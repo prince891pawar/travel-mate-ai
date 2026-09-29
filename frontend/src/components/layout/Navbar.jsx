@@ -22,15 +22,15 @@ const Navbar = () => {
       <div className="h-1 bg-blue-600" />
 
       <header className="bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-3">
-            <Link to="/" className="text-2xl font-extrabold text-slate-900">
+            <Link to="/" className="text-xl font-extrabold text-slate-900 sm:text-2xl">
               Travel <span className="text-blue-600">Mate</span>
             </Link>
           </div>
 
           <nav className="hidden md:block">
-            <ul className="flex gap-8 items-center text-gray-600">
+            <ul className="flex flex-wrap items-center gap-x-6 gap-y-2 text-gray-600 lg:gap-8">
               {links.map(({ label, to }) => (
                 <li key={label}>
                   <NavLink
@@ -48,20 +48,20 @@ const Navbar = () => {
 
           <div className="flex flex-wrap items-center gap-3">
             {token ? (
-              <button type="button" onClick={handleLogout} className="text-gray-600 hover:text-slate-900">
+              <button type="button" onClick={handleLogout} className="inline-flex min-h-11 items-center text-sm font-medium text-gray-600 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
                 Logout
               </button>
             ) : (
               <>
                 <Link
                   to="/login"
-                  className="text-gray-600 hover:text-slate-900"
+                  className="inline-flex min-h-11 items-center text-sm font-medium text-gray-600 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="rounded-full bg-blue-600 px-4 py-2 text-white shadow hover:bg-blue-700 transition"
+                  className="inline-flex min-h-11 items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
                 >
                   Register
                 </Link>

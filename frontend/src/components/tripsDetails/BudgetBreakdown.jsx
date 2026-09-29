@@ -17,7 +17,7 @@ const BudgetBreakdown = ({ breakdown }) => {
 
   if (!breakdown) {
     return (
-      <section className="w-full space-y-4 rounded-xl bg-slate-50 p-6">
+      <section className="w-full space-y-4 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
         <h2 className="text-2xl font-bold text-gray-900">Estimated Budget</h2>
         <p className="text-sm text-gray-600">Budget estimates will appear when the AI travel plan is ready.</p>
       </section>
@@ -27,7 +27,7 @@ const BudgetBreakdown = ({ breakdown }) => {
   const total = Number(breakdown.total) || categories.reduce((sum, category) => sum + (Number(breakdown[category.key]) || 0), 0)
 
   return (
-    <section className="w-full space-y-6 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-6 lg:p-8">
+    <section className="w-full min-w-0 space-y-5 rounded-2xl border border-slate-200 bg-white p-4 sm:p-6">
       <div>
         <h2 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">Estimated Budget</h2>
         <p className="text-sm text-gray-600">AI-generated estimates in {breakdown.currency || 'INR'}.</p>
@@ -35,7 +35,7 @@ const BudgetBreakdown = ({ breakdown }) => {
 
       <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
         <p className="text-sm font-semibold uppercase text-gray-600">Estimated Total</p>
-        <p className="mt-2 text-3xl font-bold text-gray-900">{formatCurrency(total)}</p>
+        <p className="mt-2 break-words text-2xl font-bold text-gray-900 sm:text-3xl">{formatCurrency(total)}</p>
       </div>
 
       <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm md:p-6">
@@ -46,10 +46,10 @@ const BudgetBreakdown = ({ breakdown }) => {
             const percentage = total > 0 ? Math.min((amount / total) * 100, 100) : 0
             return (
               <div key={category.key} className="border-b border-gray-100 pb-5 last:border-b-0 last:pb-0">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
+                <div className="mb-3 flex min-w-0 flex-wrap items-center justify-between gap-3">
+                  <div className="flex min-w-0 items-center gap-3">
                     <span className="text-2xl" aria-label={category.name}>{category.icon}</span>
-                    <span className="text-sm font-semibold text-gray-900 md:text-base">{category.name}</span>
+                    <span className="break-words text-sm font-semibold text-gray-900 md:text-base">{category.name}</span>
                   </div>
                   <span className="text-sm font-bold text-gray-900 md:text-base">{formatCurrency(amount)}</span>
                 </div>

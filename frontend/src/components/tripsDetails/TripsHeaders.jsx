@@ -17,7 +17,7 @@ const TripsHeaders = ({ trip }) => {
     try {
       await navigator.clipboard.writeText(shareText)
       setStatusMessage('Trip details copied to clipboard!')
-    } catch (error) {
+    } catch {
       setStatusMessage('Unable to copy trip details.')
     }
 
@@ -55,27 +55,23 @@ const TripsHeaders = ({ trip }) => {
   }
 
   return (
-    <section className="rounded-[36px] overflow-hidden border border-slate-200 bg-white shadow-sm">
-      <div className="relative overflow-hidden bg-slate-900/5">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-            style={{ filter: 'brightness(0.55)' }}
-        />
-        <div className="relative px-6 pb-10 pt-6 sm:px-8 lg:px-10">
+    <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div className="relative overflow-hidden bg-slate-50">
+        <div className="relative p-4 sm:p-6 lg:p-8">
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <BackButton onClick={() => navigate('/dashboard')} />
               <div className="flex flex-wrap items-center gap-3">
-                <span className="rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm">
+                <span className="max-w-full break-words rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-900">
                   From {trip.startingFrom}
                 </span>
-                <span className="rounded-full bg-white/90 px-4 py-2 text-sm text-slate-600 shadow-sm">
+                <span className="max-w-full break-words rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600">
                   {formatTripDates(trip)}
                 </span>
               </div>
             </div>
 
-            <div className="grid gap-6 rounded-[32px] bg-white/90 p-8 shadow-xl shadow-slate-950/5 sm:grid-cols-[1.8fr_1.2fr]">
+            <div className="grid min-w-0 gap-5 rounded-xl border border-slate-200 bg-white p-4 sm:p-6 lg:grid-cols-[minmax(0,1.8fr)_minmax(16rem,1.2fr)]">
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-3 text-slate-700">
                   <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm font-medium text-slate-900">
@@ -88,7 +84,7 @@ const TripsHeaders = ({ trip }) => {
                   </span>
                 </div>
                 <div>
-                  <h1 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
+                  <h1 className="break-words text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
                     {trip.destination}
                   </h1>
                   <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
@@ -112,7 +108,7 @@ const TripsHeaders = ({ trip }) => {
                 </div>
               </div>
 
-              <div className="space-y-4 rounded-[28px] bg-slate-950/95 p-6 text-white shadow-lg shadow-slate-950/20">
+              <div className="space-y-4 rounded-xl bg-slate-900 p-5 text-white shadow-sm sm:p-6">
                 <div className="space-y-2">
                   <p className="text-sm uppercase tracking-[0.24em] text-slate-400">Trip actions</p>
                   <h2 className="text-2xl font-semibold">Manage your trip</h2>
@@ -121,21 +117,21 @@ const TripsHeaders = ({ trip }) => {
                   <button
                     type="button"
                     onClick={handleEdit}
-                    className="w-full rounded-3xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                    className="min-h-11 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                   >
                     Edit Trip
                   </button>
                   <button
                     type="button"
                     onClick={handleShare}
-                    className="w-full rounded-3xl border border-slate-200 bg-white/10 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/15"
+                    className="min-h-11 w-full rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                   >
                     Share
                   </button>
                   <button
                     type="button"
                     onClick={handleDelete}
-                    className="w-full rounded-3xl bg-slate-800 px-4 py-3 text-sm font-semibold text-red-400 transition hover:bg-slate-900"
+                    className="min-h-11 w-full rounded-lg bg-slate-800 px-4 py-2.5 text-sm font-semibold text-red-300 transition hover:bg-slate-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                   >
                     Delete
                   </button>

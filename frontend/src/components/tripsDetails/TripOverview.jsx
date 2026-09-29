@@ -16,7 +16,7 @@ const TripOverview = ({ trip }) => {
     duration: duration === '--' ? 'Custom' : `${duration} Days`,
     travelers: trip.travelers || 'N/A',
     budget: trip.budget || 'N/A',
-    travelStyle: trip.travelStyle || 'Adventure',
+    travelStyle: trip.travelStyle || '—',
   }
 
   return (
@@ -32,14 +32,14 @@ const TripOverview = ({ trip }) => {
         </div>
       </div>
 
-      <div className="mt-6 grid gap-4 rounded-[28px] border border-slate-200 bg-slate-50 p-4 sm:grid-cols-5">
+      <div className="mt-6 grid grid-cols-2 gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:grid-cols-3 sm:gap-4 sm:p-4 xl:grid-cols-5">
         {overviewStats.map((stat) => (
           <div key={stat.key} className="rounded-[24px] bg-white p-4 text-slate-700 shadow-sm">
             <div className="flex items-center gap-2 text-sm font-semibold text-blue-600">
               <span>{stat.icon}</span>
               <span>{stat.label}</span>
             </div>
-            <p className="mt-4 text-lg font-semibold text-slate-900">{values[stat.key]}</p>
+            <p className="mt-3 break-words text-base font-semibold text-slate-900 sm:text-lg">{values[stat.key]}</p>
           </div>
         ))}
       </div>
